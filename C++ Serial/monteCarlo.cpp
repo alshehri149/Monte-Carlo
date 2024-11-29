@@ -41,6 +41,7 @@ double monteCarloOptionPricing(double S0, double K, double r, double sigma, doub
 }
 
 int main() {
+    
     // Option parameters
     double S0 = 100.0;   // Initial stock price
     double K = 100.0;    // Strike price

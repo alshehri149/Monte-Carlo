@@ -29,7 +29,7 @@ void mcs_calc_price(const uint32_t& num_sims, option_t& opt, float *rando_list)
 	/*************************************************************************/
 	#pragma acc data copyin(rando_list[0 : num_sims])
 	{
-		#pragma acc loop reduction(+:call_sum) reduction(+:put_sum)
+		#pragma acc parallel loop reduction(+:call_sum) reduction(+:put_sum)
 		for (uint32_t i = 0; i < num_sims; i++)
 		{
 			float S_cur = S_adjust * exp(xpr * rando_list[i]);

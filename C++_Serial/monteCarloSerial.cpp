@@ -2,11 +2,10 @@
 #include <cmath>
 #include <iostream>
 #include <nvtx3/nvToolsExt.h>
-#include <openacc.h>
 #include <curand.h>
 #include "../Common/option.h"
 
-void mcs_build_rando_list(const uint32_t& num_sims, float* rando_list)
+void mcs_build_rando_list(const uint64_t& num_sims, float* rando_list)
 {
 	curandGenerator_t randGenerator = {0};
 	curandCreateGeneratorHost(&randGenerator, CURAND_RNG_PSEUDO_DEFAULT);
@@ -16,28 +15,25 @@ void mcs_build_rando_list(const uint32_t& num_sims, float* rando_list)
 }
 
 //Calculate call and put prices with Monte Carlo method
-void mcs_calc_price(const uint32_t& num_sims, option_t& opt, float *rando_list)
+void mcs_calc_price(const uint64_t& num_sims, option_t& opt, float *rando_list)
 {
 	/*Repeated exprerssions***************************************************/
 	float S_adjust = opt.s * exp(opt.t * (opt.r - 0.5 * opt.v * opt.v));
 	float xpr = sqrt(opt.v * opt.v * opt.t);
 	/*************************************************************************/
 	
-	/*Reduction variables*****************************************************/
+	/*Sum variables***********************************************************/
 	double call_sum = 0;
 	double put_sum = 0;
 	/*************************************************************************/
-	#pragma acc data copyin(rando_list[0 : num_sims])
+
+	for (uint64_t i = 0; i < num_sims; i++)
 	{
-		#pragma acc loop reduction(+:call_sum) reduction(+:put_sum)
-		for (uint32_t i = 0; i < num_sims; i++)
-		{
-			float S_cur = S_adjust * exp(xpr * rando_list[i]);
-			float call_max = std::max((S_cur - opt.k), static_cast<float>(0.0));
-			float put_max = std::max((opt.k - S_cur), static_cast<float>(0.0));
-			call_sum += call_max;
-			put_sum += put_max;
-		}
+		float S_cur = S_adjust * exp(xpr * rando_list[i]);
+		float call_max = std::max((S_cur - opt.k), static_cast<float>(0.0));
+		float put_max = std::max((opt.k - S_cur), static_cast<float>(0.0));
+		call_sum += call_max;
+		put_sum += put_max;
 	}
 	opt.call = (call_sum / static_cast<double>(num_sims)) * exp(-opt.r * opt.t);
 	opt.put = (put_sum / static_cast<double>(num_sims)) * exp(-opt.r * opt.t);
@@ -45,7 +41,7 @@ void mcs_calc_price(const uint32_t& num_sims, option_t& opt, float *rando_list)
 
 int main(int argc, char **argv)
 {
-	uint32_t SIM_COUNT = (argc > 1) ? atol(argv[1]) : 100000000;
+	uint64_t SIM_COUNT = (argc > 1) ? atol(argv[1]) : 100000000;
 	float *rando_list = (float*)malloc(sizeof(float) * SIM_COUNT);
 	option_t option = 
 	{

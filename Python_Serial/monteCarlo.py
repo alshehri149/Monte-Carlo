@@ -1,3 +1,4 @@
+import sys
 import math
 import random
 
@@ -39,12 +40,15 @@ def monteCarloOptionPricing(S0, K, r, sigma, T, numSimulations, isCallOption):
 # Main function
 if __name__ == "__main__":
     # Option parameters
-    S0 = 100.0  # Initial stock price
-    K = 100.0   # Strike price
-    r = 0.05    # Risk-free rate
+    S0 = 42.0  # Initial stock price
+    K = 40.0   # Strike price
+    r = 0.1    # Risk-free rate
     sigma = 0.2  # Volatility
-    T = 1       # Time to maturity (1 year)
-    numSimulations = 100000  # Number of simulations
+    T = 0.5       # Time to maturity (1 year)
+    if len(sys.argv) > 1:
+        numSimulations = int(sys.argv[1])  # Number of simulations
+    else:
+        numSimulations = 100000000  # Number of simulations
 
     # Calculate option prices
     callPrice = monteCarloOptionPricing(S0, K, r, sigma, T, numSimulations, True)

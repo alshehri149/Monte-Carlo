@@ -31,5 +31,4 @@
 
 ## Usage:
     - Either navigate to Output directory or just execute the binaries directly, e.g. "Output/monteCarloSerial"
-    - For monteCarloSerial, monteCarloOpenacc and monteCarloCuda, an argument can specify the number of simulations, e.g. "Output/monteCarloCuda 50000" will run monteCarloCuda with 50000 simulations. Otherwise, if no argument is passed, a default value of 100000000 simulations is used instead.
-    - For Python implementations, just run the script directly. No arguments are required.
+    - An argument can specify the number of simulations, e.g. "Output/monteCarloCuda 50000" will run monteCarloCuda with 50000 simulations. Otherwise, if no argument is passed, a default value of 100000000 simulations is used instead.

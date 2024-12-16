@@ -2,6 +2,7 @@ from numba import cuda
 from numba.cuda.random import xoroshiro128p_normal_float32, create_xoroshiro128p_states
 import numpy as np
 import math
+import sys
 
 @cuda.jit(device=True) 
 def generate_random_number(rng_states, idx):
@@ -64,7 +65,10 @@ if __name__=="__main__":
 	T = 0.5        # Time to maturity (in years)
 	r = 0.1     # Risk-free interest rate
 	sigma = 0.2  # Volatility
-	num_simulations = 1000000000  # Number of simulations
+	if len(sys.argv) > 1:
+		num_simulations = int(sys.argv[1])  # Number of simulations
+	else:
+		num_simulations = 100000000  # Number of simulations
 
 	# Run the simulation
 	call_price, put_price = monte_carlo_european_option_cuda(S, K, T, r, sigma, num_simulations)
@@ -78,4 +82,3 @@ if __name__=="__main__":
 	print("Time to maturity:\t", T)
 	print("Call Price:\t\t", call_price)
 	print("Put Price:\t\t", put_price)
-     

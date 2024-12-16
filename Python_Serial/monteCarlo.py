@@ -55,5 +55,11 @@ if __name__ == "__main__":
     putPrice = monteCarloOptionPricing(S0, K, r, sigma, T, numSimulations, False)
 
     # Output the results
-    print(f"European Call Option Price: {callPrice}")
-    print(f"European Put Option Price: {putPrice}")
+    print("Number of simulations:\t", numSimulations)
+    print("Spot price:\t\t", S0)
+    print("Strike price:\t\t", K)
+    print("Risk-free rate:\t\t", r)
+    print("Volatility:\t\t", sigma)
+    print("Time to maturity:\t", T)
+    print("Call Price:\t\t", callPrice)
+    print("Put Price:\t\t", putPrice)

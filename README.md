@@ -7,6 +7,7 @@
 
 ## Project Structure:
 
+    Assets:         Contains charts, images, etc..
     C++_Serial:     Contains the scalar implementation in C++.
     Common:         Contains shared headers.
     Cuda:           Contains CUDA implementation in C.
@@ -43,3 +44,20 @@
       e.g. "Output/monteCarloSerial"
     - An argument can specify the number of simulations, e.g. "Output/monteCarloCuda 50000"
       will run monteCarloCuda with 50000 simulations. Otherwise, if no argument is passed, a default value of 100000000 simulations is used instead.
+
+
+# Our TestS:
+
+## Test Rig:
+    - CPU: AMD Ryzen 9 6900HX 8-core/16-threads, 20 MB cache, 4.9 GHz.
+    - GPU: NVIDIA RTX 3080Ti Laptop.
+    - Memory: 32 GB DDR5.
+    - OS: Windows 10 running WSL (Ubuntu)
+    - SDK: Compiler: nvc++ 24.9-0
+    - Profiling: NVIDIA Nsight Systems version 2024.5.1.113-245134619542v0 (Both Win and WSL)
+
+## Results:
+![Chart of execution time (in milliseconds) per approach](/Assets/data.png)
+
+## Speedup:
+![Chart of serial (base) to optimzed approach speedup](/Assets/speedup.png)

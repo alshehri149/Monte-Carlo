@@ -46,7 +46,7 @@
       will run monteCarloCuda with 50000 simulations. Otherwise, if no argument is passed, a default value of 100000000 simulations is used instead.
 
 
-# Our TestS:
+# Our Tests:
 
 ## Test Rig:
     - CPU: AMD Ryzen 9 6900HX 8-core/16-threads, 20 MB cache, 4.9 GHz.
